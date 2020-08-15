@@ -7,7 +7,110 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button x:Name="myButton" Click="ClickHandler">Click Me</Button>
-    </StackPanel>
+    <SplitView IsPaneOpen="True" DisplayMode="Inline">
+        <SplitView.Pane>
+            <ScrollViewer>
+                <StackPanel Padding="20,8,20,20">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <Image Height="32" Width="32" Margin="0,0,10,0" VerticalAlignment="Center">
+                            <Image.Source>
+                                <SvgImageSource UriSource="Assets/chaticon.svg"></SvgImageSource>
+                            </Image.Source>
+                        </Image>
+                        <TextBlock Text="ChatApp" TextWrapping="Wrap" FontSize="24" FontWeight="Normal" Foreground="#BF000000"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="0,8,0,28">
+                        <StackPanel.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Margin" Value="0, 8, 0, 4"/>
+                            </Style>
+                            <Style TargetType="TextBox">
+                                <Setter Property="Margin" Value="0, 4, 0, 4"/>
+                            </Style>
+                        </StackPanel.Resources>
+                        <TextBlock Style="{StaticResource PanelHeaderText}">Identity Settings</TextBlock>
+                        <TextBlock Text="Your nickname:" TextWrapping="Wrap"/>
+                        <TextBox x:Name="NickNameTextBox" Text="John Rambo" TextWrapping="Wrap" LostFocus="NickNameTextBoxLostFocus" KeyUp="NickNameTextBoxKeyUp"/>
+                    </StackPanel>
+                    <TextBlock Style="{StaticResource PanelHeaderText}">Peers</TextBlock>
+                    <Pivot x:Name="ConnectionPivot" Height="auto" Background="#66FFFFFF" Margin="0,10,0,0">
+                        <Pivot.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" FontSize="14" FontWeight="semibold"/>
+                            </DataTemplate>
+                        </Pivot.HeaderTemplate>
+                        <PivotItem Header="Connections" Margin="0,0,0,0">
+                            <StackPanel Orientation="Vertical" Margin="10,10,10,10">
+                                <ListView x:Name="ConnectionList" MinHeight="200" Margin="0,0,0,8" SelectionChanged="ConnectionListSelectionChanged" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Button x:Name="PrivateChatButton" Content="Private Chat" Click="PrivateChatButtonClicked" IsEnabled="False"/>
+                                    <Button x:Name="DisconnectButton" Content="Disconnect" Click="DisconnectButtonClicked" IsEnabled="False" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </PivotItem>
+                        <PivotItem Header="New Connection" Margin="0,0,0,0">
+                            <StackPanel x:Name="ConnectSettingsPanel" Orientation="Vertical" Margin="10,10,10,10">
+                                <StackPanel.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Margin" Value="0, 8, 0, 4"/>
+                                    </Style>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="Margin" Value="0, 4, 0, 4"/>
+                                    </Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Margin" Value="0, 8, 0, 4"/>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <TextBlock Text="Peer IP address:" TextWrapping="Wrap"/>
+                                <TextBox x:Name="IPAddressTextBox" Text="192.168.0.10" TextWrapping="Wrap"/>
+                                <TextBlock Text="Peer Port:" TextWrapping="Wrap"/>
+                                <TextBox x:Name="PortTextBox" Text="999" TextWrapping="Wrap"/>
+                                <Button x:Name="ConnectButton" Content="Connect" Click="ConnectButtonClicked"/>
+                            </StackPanel>
+                        </PivotItem>
+                    </Pivot>
+                    <StackPanel Orientation="Vertical" Margin="0,32,0,8">
+                        <StackPanel.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Margin" Value="0, 4, 0, 4"/>
+                            </Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Margin" Value="0, 8, 0, 4"/>
+                            </Style>
+                        </StackPanel.Resources>
+                        <TextBlock Style="{StaticResource PanelHeaderText}">QuantumGate Local Instance</TextBlock>
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,8">
+                            <Image Height="32" Width="32" Source="{StaticResource QuantumGateLogo}" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                            <TextBlock VerticalAlignment="Center">Status: <Run x:Name="StatusText">Offline</Run></TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                            <Button Margin="0,0,0,0" x:Name="OnlineButton" Click="OnlineButtonClicked" Tag="offline">Go Online</Button>
+                            <Button Margin="10,0,0,0" x:Name="ConsoleButton" Click="ShowConsoleButtonClicked" Tag="closed">Show Console</Button>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+        </SplitView.Pane>
+        <Pivot x:Name="ChatPivot">
+            <Pivot.Resources>
+                <Style TargetType="PivotItem">
+                    <Setter Property="Margin" Value="0,0,0,0"></Setter>
+                </Style>
+            </Pivot.Resources>
+            <Pivot.Background>
+                <ImageBrush ImageSource="{StaticResource ChatIcon}" Opacity="0.02" Stretch="Uniform">
+                    <ImageBrush.RelativeTransform>
+                        <CompositeTransform CenterY="0.5" CenterX="0.5" ScaleX="0.5" ScaleY="0.5"/>
+                    </ImageBrush.RelativeTransform>
+                </ImageBrush>
+            </Pivot.Background>
+            <!-- Examples for design time -->
+            <!--
+            <PivotItem Header="Broadcast" Template="{StaticResource ChatWindow}" Tag="0">
+            </PivotItem>
+            <PivotItem Header="Sarah" Template="{StaticResource ChatWindow}">
+            </PivotItem>
+            -->
+        </Pivot>
+    </SplitView>
 </Page>

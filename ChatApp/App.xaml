@@ -3,5 +3,116 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ChatApp">
+    
+    <Application.Resources>
+        <SvgImageSource x:Key="ChatIcon" UriSource="Assets/chaticon.svg"/>
+        <SvgImageSource x:Key="QuantumGateLogo" UriSource="Assets/qglogo.svg"/>
+        <Style x:Key="PanelHeaderText" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI"></Setter>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+        <Style x:Key="ChatText" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI"></Setter>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="10,10,10,10"></Setter>
+            <Setter Property="TextWrapping" Value="Wrap"></Setter>
+        </Style>
+        <Style x:Key="OwnChatText" TargetType="TextBlock" BasedOn="{StaticResource ChatText}">
+            <Setter Property="Foreground" Value="#BF008000"></Setter>
+        </Style>
+        <Style x:Key="ChatTextNickname" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+        </Style>
+        <Style x:Key="PeerJoin" TargetType="Border">
+            <Setter Property="Background" Value="#05000000"></Setter>
+        </Style>
+        <Style x:Key="PeerJoinText" TargetType="TextBlock" BasedOn="{StaticResource ChatText}">
+            <Setter Property="Foreground" Value="#BF008000"></Setter>
+        </Style>
+        <Style x:Key="PeerLeave" TargetType="Border">
+            <Setter Property="Background" Value="#05000000"></Setter>
+        </Style>
+        <Style x:Key="PeerLeaveText" TargetType="TextBlock" BasedOn="{StaticResource ChatText}">
+            <Setter Property="Foreground" Value="#BFBF0000"></Setter>
+        </Style>
+        <Style x:Key="PeerNicknameChange" TargetType="Border">
+            <Setter Property="Background" Value="#05000000"></Setter>
+        </Style>
+        <Style x:Key="PeerNicknameChangeText" TargetType="TextBlock" BasedOn="{StaticResource ChatText}">
+            <Setter Property="Foreground" Value="#BF004C80"></Setter>
+        </Style>
+        <Style x:Key="InfoBox" TargetType="Border">
+            <Setter Property="Background" Value="#05000000"></Setter>
+            <Setter Property="Margin" Value="40,40,40,40"></Setter>
+        </Style>
+        <Style x:Key="InfoBoxText" TargetType="TextBlock" BasedOn="{StaticResource ChatText}">
+            <Setter Property="Foreground" Value="#BF000000"></Setter>
+        </Style>
+        <ControlTemplate x:Key="ChatWindow">
+            <ScrollViewer>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="6*"/>
+                        <RowDefinition MinHeight="100" Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,10,10,10" Grid.Row="0">
+                        <Button x:Name="CloseButton">Close</Button>
+                    </StackPanel>
+                    <ScrollViewer x:Name="ChatMessageView" Background="#66FFFFFF" Grid.Row="1">
+                        <ItemsControl x:Name="ChatMessageContainer">
+                            <ItemsControl.ItemContainerTransitions>
+                                <!-- For nice fade in transitions when messages get added -->
+                                <TransitionCollection>
+                                    <AddDeleteThemeTransition/>
+                                </TransitionCollection>
+                            </ItemsControl.ItemContainerTransitions>
+                            <!-- Examples for design time -->
+                            <!--
+                            <Border Style="{StaticResource InfoBox}">
+                                <TextBlock Style="{StaticResource InfoBoxText}">This is an information box.</TextBlock>
+                            </Border>
+                            <Border Style="{StaticResource PeerJoin}">
+                                <TextBlock Style="{StaticResource PeerJoinText}">John Rambo joined the chat</TextBlock>
+                            </Border>
+                            <TextBlock Style="{StaticResource ChatText}"><Run FontWeight="Bold">John Rambo:</Run> <Run>This is a message</Run></TextBlock>
+                            <TextBlock Style="{StaticResource OwnChatText}"><Run FontWeight="Bold">You:</Run> <Run>This is a message</Run></TextBlock>
+                            <Border Style="{StaticResource PeerNicknameChange}">
+                                <TextBlock Style="{StaticResource PeerNicknameChangeText}">Rambo is now known as Mustafa</TextBlock>
+                            </Border>
+                            <Border Style="{StaticResource PeerLeave}">
+                                <TextBlock Style="{StaticResource PeerLeaveText}">Mustafa left the chat</TextBlock>
+                            </Border>
+                            -->
+                        </ItemsControl>
+                    </ScrollViewer>
+                    <Grid Grid.Row="2" BorderThickness="0,2,0,0" BorderBrush="#0C000000">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="ChatMessageBox" TextWrapping="Wrap" Grid.Row="0" BorderThickness="0,0,0,0" Margin="0,10,0,0"/>
+                        <Grid Margin="10,10,10,10" Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Foreground="#55000000" Grid.Column="0" VerticalAlignment="Bottom">Type your message and press Enter or Send</TextBlock>
+                            <Button x:Name="ChatMessageSendButton" Grid.Column="2">Send</Button>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </ScrollViewer>
+        </ControlTemplate>
+    </Application.Resources>
 
 </Application>

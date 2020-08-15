@@ -3,11 +3,11 @@
   <Identity
     Name="fd9cb3e4-7a22-41cb-9b96-43d6d383d550"
     Publisher="CN=karel"
-    Version="1.0.0.0" />
+    Version="1.0.3.0" />
   <mp:PhoneIdentity PhoneProductId="fd9cb3e4-7a22-41cb-9b96-43d6d383d550" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
   <Properties>
     <DisplayName>ChatApp</DisplayName>
-    <PublisherDisplayName>karel</PublisherDisplayName>
+    <PublisherDisplayName>Karel Donk</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
@@ -18,15 +18,22 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="ChatApp.App">
-      <uap:VisualElements DisplayName="ChatApp" Description="Project for a single page C++/WinRT Universal Windows Platform (UWP) app with no predefined layout"
+      <uap:VisualElements DisplayName="ChatApp" Description="This is a sample chat application based on the QuantumGate networking library. The application&apos;s UI is based on a single page C++/WinRT Universal Windows Platform (UWP) app template."
         Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png">
         </uap:DefaultTile>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        <uap:InitialRotationPreference>
+          <uap:Rotation Preference="landscape"/>
+          <uap:Rotation Preference="portrait"/>
+          <uap:Rotation Preference="landscapeFlipped"/>
+          <uap:Rotation Preference="portraitFlipped"/></uap:InitialRotationPreference>
       </uap:VisualElements>
     </Application>
   </Applications>
   <Capabilities>
     <Capability Name="internetClient" />
+    <Capability Name="internetClientServer"/>
+    <Capability Name="privateNetworkClientServer"/>
   </Capabilities>
 </Package>
