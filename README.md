@@ -4,6 +4,8 @@
 
 This is a sample chat application built on top of the [QuantumGate](https://github.com/kareldonk/QuantumGate) peer-to-peer networking library. It's kept very basic and simple and demonstrates how to build an application and custom extender for QuantumGate. Most of the code involves working with and updating the UI of the application while QuantumGate does most the heavy lifting under the hood in order to provide secure (encrypted) and private communications.
 
+The application listens on port `999` for incoming connections. Once peers are connected you can send messages to all of them at once via the broadcast tab, or send messages to a specific peer by opening a private tab. You can connect to other peers using their IP address via the "New Connection" tab. In case you are connecting over the Internet, you will have to use the public IP address of the peer. In addition, the peer will have to be configured to allow incoming connections on port `999` (router port forwarding and firewall configuration in Windows).
+
 ![Screenshot](https://github.com/kareldonk/QuantumGate-ChatApp-Sample/blob/master/Screenshots/private_screen.jpg)
 
 Some of the more advanced features offered by QuantumGate have intentionally not been integrated and used to keep things simple. It's very easy to use this sample as a foundation for building a more advanced chat application, offering cover traffic, relay functionality and authentication. For more information about those features check out the [overview](https://github.com/kareldonk/QuantumGate/wiki/QuantumGate-Overview) in the QuantumGate documentation.
@@ -26,7 +28,9 @@ You'll require the latest version of Microsoft Visual Studio 2019, as well as th
 
 ### Dependencies
 
-This project requires the [QuantumGate](https://github.com/kareldonk/QuantumGate) peer-to-peer networking library. In addition the [C++/WinRT](https://marketplace.visualstudio.com/items?itemName=CppWinRTTeam.cppwinrt101804264) extension for Visual Studio needs to be installed as well as the [Microsoft.Windows.CppWinRT](https://www.nuget.org/packages/Microsoft.Windows.CppWinRT/) NuGet package. 
+This project requires the [QuantumGate](https://github.com/kareldonk/QuantumGate) peer-to-peer networking library. The project is configured to expect the QuantumGate library files in a specific `ChatApp\QuantumGateDist` subfolder; see the separate [`README.md`](https://github.com/kareldonk/QuantumGate-ChatApp-Sample/blob/master/ChatApp/QuantumGateDist/README.md) file in that subfolder for instructions.
+
+In addition the [C++/WinRT](https://marketplace.visualstudio.com/items?itemName=CppWinRTTeam.cppwinrt101804264) extension for Visual Studio needs to be installed as well as the [Microsoft.Windows.CppWinRT](https://www.nuget.org/packages/Microsoft.Windows.CppWinRT/) NuGet package. 
 
 ## License
 
