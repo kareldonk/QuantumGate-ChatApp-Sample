@@ -63,6 +63,7 @@
     <None Include="Assets\qglogo.svg">
       <Filter>Assets</Filter>
     </None>
+    <None Include="ChatApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />

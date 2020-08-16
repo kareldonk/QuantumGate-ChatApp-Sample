@@ -37,16 +37,26 @@ namespace winrt::ChatApp::implementation
 		ShowMessage(L"An error occured", msg);
 	}
 
-	void MainPage::EnableAllChildControls(const winrt::Windows::UI::Xaml::Controls::StackPanel& element, const bool enable) noexcept
+	void MainPage::EnableAllChildControls(const winrt::Windows::Foundation::IInspectable& element, const bool enable) noexcept
 	{
-		for (const auto& child : element.Children().GetView())
+		try
 		{
-			try
-			{
-				child.as<winrt::Windows::UI::Xaml::Controls::Control>().IsEnabled(enable);
-			}
-			catch (...) {}
+			element.as<winrt::Windows::UI::Xaml::Controls::Control>().IsEnabled(enable);
 		}
+		catch (...) {}
+
+		try
+		{
+			const auto children = element.as<winrt::Windows::UI::Xaml::FrameworkElement>().GetChildrenInTabFocusOrder();
+			if (children != nullptr)
+			{
+				for (const auto& c : children)
+				{
+					EnableAllChildControls(c, enable);
+				}
+			}
+		}
+		catch (...) {}
 	}
 
 	void MainPage::ConnectToPeer() noexcept
@@ -66,20 +76,17 @@ namespace winrt::ChatApp::implementation
 			return;
 		}
 
-		// Disable controls while we connect
-		EnableAllChildControls(ConnectSettingsPanel(), false);
+		SetConnectTabStateConnecting();
 
 		// Local instance needs to be online first
 		if (!m_Local.IsRunning())
 		{
 			if (!StartLocalInstance())
 			{
-				EnableAllChildControls(ConnectSettingsPanel(), true);
+				SetConnectTabStateReady();
 				return;
 			}
 		}
-
-		ConnectButton().Content(winrt::box_value(L"Connecting..."));
 
 		QuantumGate::ConnectParameters cp;
 		cp.PeerIPEndpoint = QuantumGate::IPEndpoint(ip, port);
@@ -91,7 +98,7 @@ namespace winrt::ChatApp::implementation
 																 QuantumGate::Result<QuantumGate::Peer> result) mutable
 		{
 			// Since we will be updating the UI from within this callback function,
-			// and the callback function will be called by one of the QuanumGate threads, 
+			// and the callback function will be called by one of the QuantumGate threads, 
 			// we'll have to pass execution on to the UI thread. Windows does not
 			// allow updating the UI from another thread except for the one where
 			// it was created (deadlocks or crashes happen). This pattern is used
@@ -99,15 +106,14 @@ namespace winrt::ChatApp::implementation
 			this->Dispatcher().RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal,
 										[&, r = std::move(result)]()
 			{
+				SetConnectTabStateReady();
+
 				if (r.Failed())
 				{
 					std::wstring str{ L"Failed to connect to peer (" + r.GetErrorString() + L")." };
 					ShowErrorMessage(str.c_str());
 				}
-
-				ConnectButton().Content(winrt::box_value(L"Connect"));
-				EnableAllChildControls(ConnectSettingsPanel(), true);
-				ConnectionPivot().SelectedIndex(0);
+				else ConnectionPivot().SelectedIndex(0);
 			});
 		});
 
@@ -117,8 +123,8 @@ namespace winrt::ChatApp::implementation
 			{
 				ShowMessage(L"New connection", L"A connection to the peer already existed.");
 
-				ConnectButton().Content(winrt::box_value(L"Connect"));
-				EnableAllChildControls(ConnectSettingsPanel(), true);
+				SetConnectTabStateReady();
+
 				ConnectionPivot().SelectedIndex(0);
 			}
 		}
@@ -127,6 +133,21 @@ namespace winrt::ChatApp::implementation
 			std::wstring str{ L"Failed to connect to the peer (" + result.GetErrorString() + L")." };
 			ShowErrorMessage(str.c_str());
 		}
+	}
+
+	void MainPage::SetConnectTabStateReady() noexcept
+	{
+		ConnectProgressRing().IsActive(false);
+		ConnectButton().Content(winrt::box_value(L"Connect"));
+		EnableAllChildControls(ConnectSettingsPanel(), true);
+	}
+
+	void MainPage::SetConnectTabStateConnecting() noexcept
+	{
+		// Disable controls while we connect
+		EnableAllChildControls(ConnectSettingsPanel(), false);
+		ConnectButton().Content(winrt::box_value(L"Connecting..."));
+		ConnectProgressRing().IsActive(true);
 	}
 
 	ChatTab* MainPage::AddChatTab(const QuantumGate::PeerLUID pluid, const std::wstring title)
@@ -390,6 +411,7 @@ namespace winrt::ChatApp::implementation
 
 	bool MainPage::StartLocalInstance() noexcept
 	{
+		// Make sure our chat extender is ready to go
 		if (!InitializeChatExtender()) return false;
 
 		QuantumGate::StartupParameters params;
@@ -439,7 +461,7 @@ namespace winrt::ChatApp::implementation
 		// Start extenders on startup
 		params.EnableExtenders = true;
 
-		// For testing purposes we disable authentication requirement; when
+		// For our purposes we disable authentication requirement; when
 		// authentication is required we would need to add peers to the instance
 		// via QuantumGate::Local::GetAccessManager().AddPeer() including their
 		// UUID and public key so that they can be authenticated when connecting
@@ -457,13 +479,14 @@ namespace winrt::ChatApp::implementation
 			return false;
 		}
 
-		// Add extenders
+		// Add our chat extender to the local instance
 		if (const auto result = m_Local.AddExtender(m_Extender); result.Failed())
 		{
 			ShowErrorMessage(L"Failed to add the ChatExtender to the QuantumGate local instance.");
 			return false;
 		}
 
+		// Start the local instance
 		const auto result = m_Local.Startup(params);
 		if (result.Failed())
 		{
@@ -510,6 +533,8 @@ namespace winrt::ChatApp::implementation
 
 			m_BroadCastChatTab = nullptr;
 		}
+
+		SetConnectTabStateReady();
 
 		Windows::UI::Xaml::Media::SolidColorBrush brush(Windows::UI::Colors::Black());
 		StatusText().Foreground(brush);

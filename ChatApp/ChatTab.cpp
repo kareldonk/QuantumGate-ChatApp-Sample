@@ -80,6 +80,12 @@ namespace winrt::ChatApp::implementation
 		}
 	}
 
+	void ChatTab::AddToChatMessageContainer(const winrt::Windows::Foundation::IInspectable& item)
+	{
+		m_ChatMessageContainer.Items().Append(item);
+		ScrollToLastChatMessage();
+	}
+
 	void ChatTab::AddInformationBox(const std::wstring& info)
 	{
 		winrt::Windows::UI::Xaml::Controls::Border border;
@@ -99,8 +105,7 @@ namespace winrt::ChatApp::implementation
 
 		border.Child(textblock);
 
-		m_ChatMessageContainer.Items().Append(border);
-		ScrollToLastChatMessage();
+		AddToChatMessageContainer(border);
 	}
 
 	void ChatTab::AddJoinChatMessage(const std::wstring& pluid)
@@ -114,8 +119,7 @@ namespace winrt::ChatApp::implementation
 
 		border.Child(textblock);
 
-		m_ChatMessageContainer.Items().Append(border);
-		ScrollToLastChatMessage();
+		AddToChatMessageContainer(border);
 	}
 
 	void ChatTab::AddLeaveChatMessage(const std::wstring&, const std::wstring& nickname)
@@ -129,8 +133,7 @@ namespace winrt::ChatApp::implementation
 
 		border.Child(textblock);
 
-		m_ChatMessageContainer.Items().Append(border);
-		ScrollToLastChatMessage();
+		AddToChatMessageContainer(border);
 	}
 
 	void ChatTab::AddNicknameChangeChatMessage(const std::wstring& old_nickname, const std::wstring& new_nickname)
@@ -144,8 +147,7 @@ namespace winrt::ChatApp::implementation
 
 		border.Child(textblock);
 
-		m_ChatMessageContainer.Items().Append(border);
-		ScrollToLastChatMessage();
+		AddToChatMessageContainer(border);
 
 		if (m_PeerLUID != 0)
 		{
@@ -168,8 +170,7 @@ namespace winrt::ChatApp::implementation
 		textblock.Inlines().Append(nickrun);
 		textblock.Inlines().Append(msgrun);
 
-		m_ChatMessageContainer.Items().Append(textblock);
-		ScrollToLastChatMessage();
+		AddToChatMessageContainer(textblock);
 	}
 
 	void ChatTab::SendMessage()

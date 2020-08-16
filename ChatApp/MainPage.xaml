@@ -65,7 +65,10 @@
                                 <TextBox x:Name="IPAddressTextBox" Text="192.168.0.10" TextWrapping="Wrap"/>
                                 <TextBlock Text="Peer Port:" TextWrapping="Wrap"/>
                                 <TextBox x:Name="PortTextBox" Text="999" TextWrapping="Wrap"/>
-                                <Button x:Name="ConnectButton" Content="Connect" Click="ConnectButtonClicked"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button x:Name="ConnectButton" Content="Connect" Click="ConnectButtonClicked"/>
+                                    <ProgressRing x:Name="ConnectProgressRing" Margin="10,0,0,0"/>
+                                </StackPanel>
                             </StackPanel>
                         </PivotItem>
                     </Pivot>

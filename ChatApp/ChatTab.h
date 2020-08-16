@@ -32,6 +32,8 @@ namespace winrt::ChatApp::implementation
         void ScrollToLastChatMessage();
 
     private:
+        void AddToChatMessageContainer(const winrt::Windows::Foundation::IInspectable& item);
+
         winrt::Windows::UI::Xaml::DependencyObject GetChild(const winrt::hstring& name,
                                                             const winrt::Windows::UI::Xaml::DependencyObject& root_dp);
 

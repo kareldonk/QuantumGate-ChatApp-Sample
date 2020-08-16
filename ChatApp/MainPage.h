@@ -17,14 +17,17 @@ namespace winrt::ChatApp::implementation
 
         void ShowMessage(const winrt::hstring& title, const winrt::hstring& msg) noexcept;
         void ShowErrorMessage(const winrt::hstring& msg) noexcept;
-        void EnableAllChildControls(const winrt::Windows::UI::Xaml::Controls::StackPanel& element, const bool enable) noexcept;
+        void EnableAllChildControls(const winrt::Windows::Foundation::IInspectable& element, const bool enable) noexcept;
         
         bool InitializeChatExtender() noexcept;
         void UpdateExtenderNickname();
 
         bool StartLocalInstance() noexcept;
         void ShutdownLocalInstance() noexcept;
+        
         void ConnectToPeer() noexcept;
+        void SetConnectTabStateConnecting() noexcept;
+        void SetConnectTabStateReady() noexcept;
         
         ChatTab* AddChatTab(const QuantumGate::PeerLUID pluid, const std::wstring title);
         void CloseChatTab(const QuantumGate::PeerLUID pluid);
