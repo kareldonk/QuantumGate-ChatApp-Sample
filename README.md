@@ -1,8 +1,14 @@
+![Screenshot](https://github.com/kareldonk/QuantumGate-ChatApp-Sample/blob/master/Screenshots/broadcast_screen.jpg)
+
 ## About
 
 This is a sample chat application built on top of the [QuantumGate](https://github.com/kareldonk/QuantumGate) peer-to-peer networking library. It's kept very basic and simple and demonstrates how to build an application and custom extender for QuantumGate. Most of the code involves working with and updating the UI of the application while QuantumGate does most the heavy lifting under the hood in order to provide secure (encrypted) and private communications.
 
-Some of the more advanced features offered by QuantumGate have intentionally not been integrated and used to keep things simple. It's very easy to use this sample as a foundation for building a more advanced chat application, offering cover traffic, relay functionality and authentication. For more information check out the [overview](https://github.com/kareldonk/QuantumGate/wiki/QuantumGate-Overview) in the QuantumGate documentation.
+![Screenshot](https://github.com/kareldonk/QuantumGate-ChatApp-Sample/blob/master/Screenshots/private_screen.jpg)
+
+Some of the more advanced features offered by QuantumGate have intentionally not been integrated and used to keep things simple. It's very easy to use this sample as a foundation for building a more advanced chat application, offering cover traffic, relay functionality and authentication. For more information about those features check out the [overview](https://github.com/kareldonk/QuantumGate/wiki/QuantumGate-Overview) in the QuantumGate documentation.
+
+For this sample, the C++/WinRT framework is used for the UI.
 
 ## Platforms
 
