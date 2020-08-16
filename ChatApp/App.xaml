@@ -51,67 +51,69 @@
             <Setter Property="Foreground" Value="#BF000000"></Setter>
         </Style>
         <ControlTemplate x:Key="ChatWindow">
-            <ScrollViewer>
-                <Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition MinHeight="100" Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,10,10,10" Grid.Row="0">
+                    <Button x:Name="CloseButton">Close</Button>
+                </StackPanel>
+                <ScrollViewer x:Name="ChatMessageView" Background="#66FFFFFF" Grid.Row="1">
+                    <ItemsControl x:Name="ChatMessageContainer">
+                        <ItemsControl.ItemContainerTransitions>
+                            <!-- For nice fade in transitions when messages get added -->
+                            <TransitionCollection>
+                                <AddDeleteThemeTransition/>
+                            </TransitionCollection>
+                        </ItemsControl.ItemContainerTransitions>
+                        <!-- Examples for design time -->
+                        <!--
+                        <Border Style="{StaticResource InfoBox}">
+                            <TextBlock Style="{StaticResource InfoBoxText}"><Run FontWeight="Bold">Note:</Run> <Run>This is an information box.</Run></TextBlock>
+                        </Border>
+                        <Border Style="{StaticResource PeerJoin}">
+                            <TextBlock Style="{StaticResource PeerJoinText}">John Rambo joined the chat</TextBlock>
+                        </Border>
+                        <TextBlock Style="{StaticResource ChatText}"><Run FontWeight="Bold">John Rambo:</Run> <Run>This is a message</Run></TextBlock>
+                        <TextBlock Style="{StaticResource OwnChatText}"><Run FontWeight="Bold">You:</Run> <Run>This is a message</Run></TextBlock>
+                        <Border Style="{StaticResource PeerNicknameChange}">
+                            <TextBlock Style="{StaticResource PeerNicknameChangeText}">Rambo is now known as Mustafa</TextBlock>
+                        </Border>
+                        <Border Style="{StaticResource PeerLeave}">
+                            <TextBlock Style="{StaticResource PeerLeaveText}">Mustafa left the chat</TextBlock>
+                        </Border>
+                        <TextBlock Style="{StaticResource ChatText}"><Run FontWeight="Bold">W. Nelson:</Run> <Run>I was a highwayman. Along the coach roads I did ride. With sword and pistol by my side. Many a young maid lost her baubles to my trade. Many a soldier shed his lifeblood on my blade. The bastards hung me in the spring of twenty-five. But I'm still alive.</Run></TextBlock>
+                        <TextBlock Style="{StaticResource ChatText}"><Run FontWeight="Bold">K. Kristofferson:</Run> <Run>I was a sailor. I was born upon the tide. And with the sea I did abide. I sailed a schooner round the Horn to Mexico. I went aloft and furled the mainsail in a blow. And when the yards broke off they said that I got killed. But I am living still.</Run></TextBlock>
+                        <TextBlock Style="{StaticResource ChatText}"><Run FontWeight="Bold">W. Jennings:</Run> <Run>I was a dam builder. Across the river deep and wide. Where steel and water did collide. A place called Boulder on the wild Colorado. I slipped and fell into the wet concrete below. They buried me in that great tomb that knows no sound. But I'm still around. I'll always be around, and around and around and around and around...</Run></TextBlock>
+                        <TextBlock Style="{StaticResource OwnChatText}"><Run FontWeight="Bold">J. Cash:</Run> <Run>I'll fly a starship 🛸. Across the Universe 🌌 divide. And when I reach the other side, I'll find a place to rest my spirit if I can. Perhaps I may become a highwayman again. Or I may simply be a single drop of rain. But I will remain. And I'll be back again, and again and again and again and again...</Run></TextBlock>
+                        -->
+                    </ItemsControl>
+                </ScrollViewer>
+                <Grid Grid.Row="2" BorderThickness="0,2,0,0" BorderBrush="#0C000000">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
                         <RowDefinition Height="auto"/>
-                        <RowDefinition Height="6*"/>
-                        <RowDefinition MinHeight="100" Height="*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,10,10,10" Grid.Row="0">
-                        <Button x:Name="CloseButton">Close</Button>
-                    </StackPanel>
-                    <ScrollViewer x:Name="ChatMessageView" Background="#66FFFFFF" Grid.Row="1">
-                        <ItemsControl x:Name="ChatMessageContainer">
-                            <ItemsControl.ItemContainerTransitions>
-                                <!-- For nice fade in transitions when messages get added -->
-                                <TransitionCollection>
-                                    <AddDeleteThemeTransition/>
-                                </TransitionCollection>
-                            </ItemsControl.ItemContainerTransitions>
-                            <!-- Examples for design time -->
-                            <!--
-                            <Border Style="{StaticResource InfoBox}">
-                                <TextBlock Style="{StaticResource InfoBoxText}">This is an information box.</TextBlock>
-                            </Border>
-                            <Border Style="{StaticResource PeerJoin}">
-                                <TextBlock Style="{StaticResource PeerJoinText}">John Rambo joined the chat</TextBlock>
-                            </Border>
-                            <TextBlock Style="{StaticResource ChatText}"><Run FontWeight="Bold">John Rambo:</Run> <Run>This is a message</Run></TextBlock>
-                            <TextBlock Style="{StaticResource OwnChatText}"><Run FontWeight="Bold">You:</Run> <Run>This is a message</Run></TextBlock>
-                            <Border Style="{StaticResource PeerNicknameChange}">
-                                <TextBlock Style="{StaticResource PeerNicknameChangeText}">Rambo is now known as Mustafa</TextBlock>
-                            </Border>
-                            <Border Style="{StaticResource PeerLeave}">
-                                <TextBlock Style="{StaticResource PeerLeaveText}">Mustafa left the chat</TextBlock>
-                            </Border>
-                            -->
-                        </ItemsControl>
-                    </ScrollViewer>
-                    <Grid Grid.Row="2" BorderThickness="0,2,0,0" BorderBrush="#0C000000">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
+                    <TextBox x:Name="ChatMessageBox" TextWrapping="Wrap" Grid.Row="0" BorderThickness="0,0,0,0" Margin="0,10,0,0"/>
+                    <Grid Margin="10,10,10,10" Grid.Row="1">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBox x:Name="ChatMessageBox" TextWrapping="Wrap" Grid.Row="0" BorderThickness="0,0,0,0" Margin="0,10,0,0"/>
-                        <Grid Margin="10,10,10,10" Grid.Row="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Foreground="#55000000" Grid.Column="0" VerticalAlignment="Bottom">Type your message and press Enter or Send</TextBlock>
-                            <Button x:Name="ChatMessageSendButton" Grid.Column="2">Send</Button>
-                        </Grid>
+                        <TextBlock Foreground="#55000000" Grid.Column="0" VerticalAlignment="Bottom">Type your message and press Enter or Send</TextBlock>
+                        <Button x:Name="ChatMessageSendButton" Grid.Column="2">Send</Button>
                     </Grid>
                 </Grid>
-            </ScrollViewer>
+            </Grid>
         </ControlTemplate>
     </Application.Resources>
 
