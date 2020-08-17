@@ -103,6 +103,8 @@ namespace winrt::ChatApp::implementation
 			// allow updating the UI from another thread except for the one where
 			// it was created (deadlocks or crashes happen). This pattern is used
 			// below in the code as well.
+			// Also note that we move or copy the parameters into the callback function below
+			// in order to prevent lifetime issues.
 			this->Dispatcher().RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal,
 										[&, r = std::move(result)]()
 			{
@@ -237,7 +239,7 @@ namespace winrt::ChatApp::implementation
 							winrt::Windows::UI::Xaml::Controls::TextBlock tb;
 
 							// Initially use the peer LUID to identify the peer
-							// in the list (will get updated later with the nickname
+							// in the list (will get updated later with the nickname)
 							tb.Text(pluid.c_str());
 
 							// Also save the peer LUID in the control tag for later use
@@ -315,8 +317,11 @@ namespace winrt::ChatApp::implementation
 													  const std::wstring& old_nickname) mutable
 				{
 					this->Dispatcher().RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal,
-												[&, speer = peer, snickname = nickname, sonickname = old_nickname]()
+												[&, speer = peer, snickname = nickname, sonickname = old_nickname]() // *1
 					{
+						// *1) Note the copying of the parameters into this callback function
+						// to prevent lifetime issues. This is done for all callbacks below.
+
 						// Update peer nickname in connection list
 						{
 							for (const auto& itm : ConnectionList().Items())
@@ -500,7 +505,7 @@ namespace winrt::ChatApp::implementation
 		StatusText().Text(L"Online");
 
 		OnlineButton().Content(winrt::box_value(L"Go Offline"));
-		OnlineButton().Tag(box_value(L"online"));
+		OnlineButton().Tag(winrt::box_value(L"online"));
 
 		m_BroadCastChatTab = AddChatTab(0, L"Broadcast");
 
@@ -540,8 +545,8 @@ namespace winrt::ChatApp::implementation
 		StatusText().Foreground(brush);
 		StatusText().Text(L"Offline");
 
-		OnlineButton().Tag(box_value(L"offline"));
-		OnlineButton().Content(box_value(L"Go Online"));
+		OnlineButton().Tag(winrt::box_value(L"offline"));
+		OnlineButton().Content(winrt::box_value(L"Go Online"));
 	}
 
 	void MainPage::ShowConsoleButtonClicked(const winrt::Windows::Foundation::IInspectable&,
@@ -552,14 +557,14 @@ namespace winrt::ChatApp::implementation
 			QuantumGate::Console::SetOutput(std::make_shared<QuantumGate::Console::WindowOutput>(false, false));
 			QuantumGate::Console::SetVerbosity(QuantumGate::Console::Verbosity::Debug);
 
-			ConsoleButton().Tag(box_value(L"open"));
-			ConsoleButton().Content(box_value(L"Close Console"));
+			ConsoleButton().Tag(winrt::box_value(L"open"));
+			ConsoleButton().Content(winrt::box_value(L"Close Console"));
 		}
 		else
 		{
 			QuantumGate::Console::SetOutput(nullptr);
-			ConsoleButton().Tag(box_value(L"closed"));
-			ConsoleButton().Content(box_value(L"Show Console"));
+			ConsoleButton().Tag(winrt::box_value(L"closed"));
+			ConsoleButton().Content(winrt::box_value(L"Show Console"));
 		}
 	}
 
@@ -629,14 +634,12 @@ namespace winrt::ChatApp::implementation
 
 				// First check if we already had a tab open for this peer,
 				// and if so we just bring it into focus
-				for (const auto& tab : m_ChatTabs)
+				const auto it = m_ChatTabs.find(pluid);
+				if (it != m_ChatTabs.end())
 				{
-					if (tab.second->GetPeerLUID() == pluid)
-					{
-						ChatPivot().SelectedItem(tab.second->GetPivotItem());
-						tab.second->FocusOnChatMessageBox();
-						return;
-					}
+					ChatPivot().SelectedItem(it->second->GetPivotItem());
+					it->second->FocusOnChatMessageBox();
+					return;
 				}
 			}
 

@@ -42,7 +42,7 @@ void ChatExtender::OnPreShutdown()
 	// This callback function gets called by the QuantumGate instance to notify
 	// an extender that the shut down procedure has been initiated for this extender.
 	// The extender should stop all activity and prepare for deinitialization before
-	// returning from this function.
+	// returning from this function
 
 }
 
@@ -119,11 +119,14 @@ QuantumGate::Extender::PeerEvent::Result ChatExtender::OnPeerMessage(QuantumGate
 				{
 					std::unique_lock lock(m_PeersMutex);
 
+					// Look for the peer in or collection; the peer should
+					// already exist there otherwise something is wrong
 					const auto it = m_Peers.find(event.GetPeerLUID());
 					if (it != m_Peers.end())
 					{
 						const auto old_nickname = it->second.Nickname;
 
+						// Copy new nickname
 						it->second.Nickname.resize(MaxNicknameLength);
 						std::memcpy(it->second.Nickname.data(), msg_data_view.GetBytes(), msg_data_view.GetSize());
 
@@ -163,6 +166,8 @@ QuantumGate::Extender::PeerEvent::Result ChatExtender::OnPeerMessage(QuantumGate
 
 							std::shared_lock lock(m_PeersMutex);
 
+							// Look for the peer in or collection; the peer should
+							// already exist there otherwise something is wrong
 							const auto it = m_Peers.find(event.GetPeerLUID());
 							if (it != m_Peers.end())
 							{
@@ -264,14 +269,22 @@ bool ChatExtender::SendNicknameChange(const QuantumGate::PeerLUID pluid) const
 	constexpr std::uint8_t msgtype = static_cast<std::uint8_t>(MessageType::NicknameChange);
 
 	QuantumGate::Buffer buffer;
+
+	// wstring uses multiple bytes per character (2 on windows) so 
+	// we need to calculate the actual storage size in bytes
 	const auto nickname_byte_len = MaxNicknameLength * sizeof(std::wstring::value_type);
+	
+	// We allocate enough room in the buffer to store:
+	// message type, the nickname (which is a fixed length of MaxNicknameLength)
 	buffer.Allocate(1 + nickname_byte_len);
 
+	// Copy message type into buffer
 	buffer[0] = QuantumGate::Byte{ msgtype };
 
 	{
 		std::shared_lock lock(m_NicknameMutex);
 
+		// Copy nickname into buffer
 		std::memcpy(buffer.GetBytes() + 1, m_Nickname.data(), m_Nickname.size() * sizeof(std::wstring::value_type));
 	}
 
@@ -309,11 +322,20 @@ bool ChatExtender::SendChatMessage(const QuantumGate::PeerLUID pluid, const std:
 		static_cast<std::uint8_t>(MessageType::PrivateChatMessage);
 
 	QuantumGate::Buffer buffer;
+
+	// wstring uses multiple bytes per character (2 on windows) so 
+	// we need to calculate the actual storage size in bytes
 	const std::uint16_t message_byte_len = static_cast<std::uint16_t>(msg.size() * sizeof(std::wstring::value_type));
+
+	// We allocate enough room in the buffer to store:
+	// message type, the message size, and the message itself
 	buffer.Allocate(1 + sizeof(message_byte_len) + message_byte_len);
 
+	// Copy message type into buffer
 	buffer[0] = QuantumGate::Byte{ msgtype };
+	// Copy message size into buffer
 	std::memcpy(buffer.GetBytes() + 1, &message_byte_len, sizeof(message_byte_len));
+	// Copy the message into the buffer
 	std::memcpy(buffer.GetBytes() + 1 + sizeof(message_byte_len), msg.data(), message_byte_len);
 
 	QuantumGate::SendParameters params{
