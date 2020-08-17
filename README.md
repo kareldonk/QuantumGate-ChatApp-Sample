@@ -10,7 +10,9 @@ The application listens on port `999` for incoming connections. Once peers are c
 
 Some of the more advanced features offered by QuantumGate have intentionally not been integrated and used to keep things simple. It's very easy to use this sample as a foundation for building a more advanced chat application, offering cover traffic, relay functionality and authentication. For more information about those features check out the [overview](https://github.com/kareldonk/QuantumGate/wiki/QuantumGate-Overview) in the QuantumGate documentation.
 
-For this sample, the C++/WinRT framework is used for the UI.
+## Tutorial
+
+A tutorial with much more detailed explanations for this sample application can be found in [the QuantumGate wiki](https://github.com/kareldonk/QuantumGate/wiki/Building-a-Chat-Application-using-the-QuantumGate-P2P-Networking-library) on GitHub.
 
 ## Platforms
 
