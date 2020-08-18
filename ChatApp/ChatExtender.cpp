@@ -270,7 +270,7 @@ bool ChatExtender::SendNicknameChange(const QuantumGate::PeerLUID pluid) const
 
 	QuantumGate::Buffer buffer;
 
-	// wstring uses multiple bytes per character (2 on windows) so 
+	// wstring uses multiple bytes per character (2 on Windows) so 
 	// we need to calculate the actual storage size in bytes
 	const auto nickname_byte_len = MaxNicknameLength * sizeof(std::wstring::value_type);
 	
@@ -323,7 +323,7 @@ bool ChatExtender::SendChatMessage(const QuantumGate::PeerLUID pluid, const std:
 
 	QuantumGate::Buffer buffer;
 
-	// wstring uses multiple bytes per character (2 on windows) so 
+	// wstring uses multiple bytes per character (2 on Windows) so 
 	// we need to calculate the actual storage size in bytes
 	const std::uint16_t message_byte_len = static_cast<std::uint16_t>(msg.size() * sizeof(std::wstring::value_type));
 
