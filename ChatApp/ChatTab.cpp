@@ -18,9 +18,11 @@ namespace winrt::ChatApp::implementation
 		m_ChatMessageContainer = GetChild(L"ChatMessageContainer", m_PivotItem).as<winrt::Windows::UI::Xaml::Controls::ItemsControl>();
 		m_ChatMessageBox = GetChild(L"ChatMessageBox", m_PivotItem).as<winrt::Windows::UI::Xaml::Controls::TextBox>();
 		m_CloseButton = GetChild(L"CloseButton", m_PivotItem).as<winrt::Windows::UI::Xaml::Controls::Button>();
+		m_EmojiButton = GetChild(L"ChatMessageEmojiButton", m_PivotItem).as<winrt::Windows::UI::Xaml::Controls::Button>();
 		m_SendButton = GetChild(L"ChatMessageSendButton", m_PivotItem).as<winrt::Windows::UI::Xaml::Controls::Button>();
 
 		m_ChatMessageBox.KeyUp({ this, &ChatTab::ChatMessageBoxKeyUp });
+		m_EmojiButton.Click({ this, &ChatTab::EmojiButtonClicked });
 		m_SendButton.Click({ this, &ChatTab::SendButtonClicked });
 
 		// Peer LUID of 0 is used for the broadcast tab
@@ -213,6 +215,20 @@ namespace winrt::ChatApp::implementation
 	{
 		// Main page will handle closing this tab
 		m_MainPage->CloseChatTab(m_PeerLUID);
+	}
+
+	void ChatTab::EmojiButtonClicked(const winrt::Windows::Foundation::IInspectable&,
+									 const winrt::Windows::UI::Xaml::RoutedEventArgs&)
+	{
+		const auto civ = winrt::Windows::UI::ViewManagement::Core::CoreInputView::GetForCurrentView();
+		if (civ != nullptr)
+		{
+			// Need to focus on the chat message textbox before showing the 
+			// emoji input so that it gets displayed close to the textbox
+			FocusOnChatMessageBox();
+
+			civ.TryShow(winrt::Windows::UI::ViewManagement::Core::CoreInputViewKind::Emoji);
+		}
 	}
 
 	void ChatTab::SendButtonClicked(const winrt::Windows::Foundation::IInspectable&,

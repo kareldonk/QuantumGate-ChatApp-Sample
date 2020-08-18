@@ -108,9 +108,11 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Foreground="#55000000" Grid.Column="0" VerticalAlignment="Bottom">Type your message and press Enter or Send</TextBlock>
-                        <Button x:Name="ChatMessageSendButton" Grid.Column="2">Send</Button>
+                        <Button x:Name="ChatMessageEmojiButton" Grid.Column="2">🙂</Button>
+                        <Button x:Name="ChatMessageSendButton" Grid.Column="3" Margin="10,0,0,0">Send</Button>
                     </Grid>
                 </Grid>
             </Grid>

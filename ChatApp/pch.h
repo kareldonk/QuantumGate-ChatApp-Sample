@@ -20,6 +20,7 @@
 #include <winrt/Windows.UI.Xaml.Input.h>
 #include <winrt/Windows.UI.Text.h>
 #include <winrt/Windows.UI.Xaml.Media.Animation.h>
+#include <winrt/Windows.UI.ViewManagement.Core.h>
 
 // Include the QuantumGate main header with API definitions
 #include <QuantumGate.h>

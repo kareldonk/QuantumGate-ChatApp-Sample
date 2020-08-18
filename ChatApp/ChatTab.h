@@ -49,6 +49,8 @@ namespace winrt::ChatApp::implementation
                                  const winrt::Windows::UI::Xaml::Input::KeyRoutedEventArgs& e);
         void CloseButtonClicked(const winrt::Windows::Foundation::IInspectable& sender,
                                 const winrt::Windows::UI::Xaml::RoutedEventArgs& e);
+        void EmojiButtonClicked(const winrt::Windows::Foundation::IInspectable& sender,
+                                const winrt::Windows::UI::Xaml::RoutedEventArgs& e);
         void SendButtonClicked(const winrt::Windows::Foundation::IInspectable& sender,
                                const winrt::Windows::UI::Xaml::RoutedEventArgs& e);
 
@@ -62,6 +64,7 @@ namespace winrt::ChatApp::implementation
         winrt::Windows::UI::Xaml::Controls::TextBox m_ChatMessageBox;
         winrt::Windows::UI::Xaml::Controls::ScrollViewer m_ChatMessageView;
         winrt::Windows::UI::Xaml::Controls::Button m_CloseButton;
+        winrt::Windows::UI::Xaml::Controls::Button m_EmojiButton;
         winrt::Windows::UI::Xaml::Controls::Button m_SendButton;
     };
 }
