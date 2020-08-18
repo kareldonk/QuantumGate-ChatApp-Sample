@@ -119,7 +119,7 @@ QuantumGate::Extender::PeerEvent::Result ChatExtender::OnPeerMessage(QuantumGate
 				{
 					std::unique_lock lock(m_PeersMutex);
 
-					// Look for the peer in or collection; the peer should
+					// Look for the peer in our collection; the peer should
 					// already exist there otherwise something is wrong
 					const auto it = m_Peers.find(event.GetPeerLUID());
 					if (it != m_Peers.end())
@@ -166,7 +166,7 @@ QuantumGate::Extender::PeerEvent::Result ChatExtender::OnPeerMessage(QuantumGate
 
 							std::shared_lock lock(m_PeersMutex);
 
-							// Look for the peer in or collection; the peer should
+							// Look for the peer in our collection; the peer should
 							// already exist there otherwise something is wrong
 							const auto it = m_Peers.find(event.GetPeerLUID());
 							if (it != m_Peers.end())
