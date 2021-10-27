@@ -88,7 +88,7 @@
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
-    <PackageCertificateThumbprint>C14E76ABA5D0249F9D0C1D7CFAD77C3AC20AE184</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>850599E6AADB6B9C1CE1974C52552779BDF29F5A</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <LibraryPath>QuantumgateDist\$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>

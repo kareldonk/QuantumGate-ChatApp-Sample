@@ -89,7 +89,7 @@ namespace winrt::ChatApp::implementation
 		}
 
 		QuantumGate::ConnectParameters cp;
-		cp.PeerIPEndpoint = QuantumGate::IPEndpoint(ip, port);
+		cp.PeerIPEndpoint = QuantumGate::IPEndpoint(QuantumGate::IPEndpoint::Protocol::TCP, ip, port);
 
 		// This overload of the ConnectTo function will connect
 		// asynchronously; we pass along a callback function which will get
@@ -458,10 +458,10 @@ namespace winrt::ChatApp::implementation
 		};
 
 		// Listen for incoming connections on startup
-		params.Listeners.Enable = true;
+		params.Listeners.TCP.Enable = true;
 
 		// Listen for incoming connections on these ports
-		params.Listeners.TCPPorts = { 999 };
+		params.Listeners.TCP.Ports = { 999 };
 
 		// Start extenders on startup
 		params.EnableExtenders = true;
