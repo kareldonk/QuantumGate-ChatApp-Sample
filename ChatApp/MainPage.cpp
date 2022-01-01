@@ -89,7 +89,7 @@ namespace winrt::ChatApp::implementation
 		}
 
 		QuantumGate::ConnectParameters cp;
-		cp.PeerIPEndpoint = QuantumGate::IPEndpoint(QuantumGate::IPEndpoint::Protocol::TCP, ip, port);
+		cp.PeerEndpoint = QuantumGate::IPEndpoint(QuantumGate::IPEndpoint::Protocol::TCP, ip, port);
 
 		// This overload of the ConnectTo function will connect
 		// asynchronously; we pass along a callback function which will get
