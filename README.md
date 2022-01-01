@@ -26,13 +26,13 @@ There are releases available on the [Releases page](https://github.com/kareldonk
 
 The `master` branch is generally kept as stable as possible so you can download the source code from there instead of from the [Releases page](https://github.com/kareldonk/QuantumGate-ChatApp-Sample/releases) if you prefer to work with the latest version.
 
-You'll require the latest version of Microsoft Visual Studio 2019, as well as the dependencies listed below. When the paths to the dependency includes and libraries have been configured properly, building is as simple as opening the `ChatApp.sln` file in the project root with Visual Studio and issuing the build command for the entire solution.
+You'll require the latest version of Microsoft Visual Studio 2019 or 2022, as well as the dependencies listed below. When the paths to the dependency includes and libraries have been configured properly, building is as simple as opening the `ChatApp.sln` file in the project root with Visual Studio and issuing the build command for the entire solution.
 
 ### Dependencies
 
 This project requires the [QuantumGate](https://github.com/kareldonk/QuantumGate) peer-to-peer networking library. The project is configured to expect the QuantumGate library files in a specific `ChatApp\QuantumGateDist` subfolder; see the separate [`README.md`](https://github.com/kareldonk/QuantumGate-ChatApp-Sample/blob/master/ChatApp/QuantumGateDist/README.md) file in that subfolder for instructions.
 
-In addition the [C++/WinRT](https://marketplace.visualstudio.com/items?itemName=CppWinRTTeam.cppwinrt101804264) extension for Visual Studio needs to be installed as well as the [Microsoft.Windows.CppWinRT](https://www.nuget.org/packages/Microsoft.Windows.CppWinRT/) NuGet package. 
+In addition the [C++/WinRT](https://marketplace.visualstudio.com/items?itemName=CppWinRTTeam.cppwinrt101804264) extension for Visual Studio 2019 needs to be installed (this comes integrated in Visual Studio 2022 with the "Universal Windows Platform development" workload installed) as well as the [Microsoft.Windows.CppWinRT](https://www.nuget.org/packages/Microsoft.Windows.CppWinRT/) NuGet package. 
 
 ## License
 
